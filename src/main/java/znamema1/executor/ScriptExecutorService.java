@@ -1,6 +1,8 @@
 package znamema1.executor;
 
 import java.util.concurrent.Semaphore;
+import znamema1.entities.ErrResult;
+import znamema1.entities.OkResult;
 import znamema1.entities.RepoConfiguration;
 import znamema1.entities.Result;
 import znamema1.entities.ScriptConfiguration;
@@ -13,14 +15,14 @@ public class ScriptExecutorService {
         try {
             SEMAPHORE.acquire();
         } catch (Exception ex) {
-            return new Result("ERROR", "Internal Error!");
+            return new ErrResult("Internal Error!");
         }
 
         try {
             String res = executeRepos(conf);
-            return new Result(res);
+            return new OkResult(res);
         } catch (Exception ex) {
-            return new Result("ERROR", ex.getMessage());
+            return new ErrResult( ex.getMessage());
         } finally {
             SEMAPHORE.release();
         }
@@ -37,8 +39,6 @@ public class ScriptExecutorService {
 
     private String executeRepo(RepoConfiguration conf, String input) {
 
-        
-        
         return "bla";
     }
 
