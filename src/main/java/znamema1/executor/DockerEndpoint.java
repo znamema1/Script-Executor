@@ -35,13 +35,4 @@ public class DockerEndpoint {
         return Response.ok("OK").build();
     }
 
-    //debug
-    @GET
-    @Path("/response/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response getResponse(@PathParam("id") int id) {
-        String output = IO.getOutput(id);
-        return Response.ok(output).build();
-    }
-
 }
