@@ -1,5 +1,7 @@
 package znamema1.entities;
 
+import znamema1.executor.ScriptExecutorException;
+
 /**
  *
  * @author martin
@@ -11,6 +13,11 @@ public class ErrResult extends Result {
     public ErrResult(String errorMessage) {
         super(ERR);
         this.errorMessage = errorMessage;
+    }
+
+    public ErrResult(ScriptExecutorException ex) {
+        super(ERR);
+        this.errorMessage = ex.getMessage();
     }
 
     public ErrResult() {

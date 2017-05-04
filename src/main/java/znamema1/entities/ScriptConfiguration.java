@@ -1,5 +1,9 @@
 package znamema1.entities;
 
+/**
+ *
+ * @author martin
+ */
 public class ScriptConfiguration {
 
     private String input;

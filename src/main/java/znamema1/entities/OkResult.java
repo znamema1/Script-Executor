@@ -37,7 +37,4 @@ public class OkResult extends Result {
         return "OkResult{" + "content=" + content + '}';
     }
     
-    
-    
-    
 }

@@ -1,5 +1,9 @@
 package znamema1.entities;
 
+/**
+ *
+ * @author martin
+ */
 public abstract class Result {
 
     protected String status;

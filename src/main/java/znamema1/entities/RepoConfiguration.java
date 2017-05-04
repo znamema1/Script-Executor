@@ -1,7 +1,11 @@
 package znamema1.entities;
 
+/**
+ *
+ * @author martin
+ */
 public class RepoConfiguration {
-    
+
     private String git;
     private String file;
     private String comm;
@@ -53,5 +57,5 @@ public class RepoConfiguration {
     public String toString() {
         return "RepoConfiguration{" + "git=" + git + ", file=" + file + ", comm=" + comm + ", order=" + order + '}';
     }
-    
+
 }
