@@ -36,8 +36,8 @@ public class RepoExecutor {
         command = new ArrayList<>();
         command.add("./masterscript.sh"); //config
         command.add(conf.getGit());
-        command.add(conf.getFile());
         command.add(conf.getComm());
+        command.add(conf.getFile());
         command.add(id.toString());
     }
 

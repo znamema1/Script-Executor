@@ -38,6 +38,10 @@ public class IOHolder {
             return OUTPUT.get(id);
         }
     }
+    
+    public String getResult(Integer id){
+        return getInput(id);
+    }
 
     public void clear(Integer id) {
         synchronized (INPUT) {

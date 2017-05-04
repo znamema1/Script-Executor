@@ -43,7 +43,7 @@ public class ScriptExecutorService {
                 executeRepo(repo, id);
                 IO.switchIO(id);
             }
-            String output = IO.getOutput(id);
+            String output = IO.getResult(id);
             return output;
         } finally {
             IO.clear(id);

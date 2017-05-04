@@ -20,11 +20,11 @@
             <artifactId>jersey-container-servlet</artifactId>
             <version>2.26-b03</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
             <version>2.25.1</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -35,6 +35,12 @@
             <groupId>com.spotify</groupId>
             <artifactId>docker-client</artifactId>
             <version>8.4.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.glassfish.jersey.core</groupId>
+                    <artifactId>jersey-client</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

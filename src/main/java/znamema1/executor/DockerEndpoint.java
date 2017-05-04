@@ -16,13 +16,13 @@ import javax.ws.rs.core.Response;
 @Path("/docker")
 public class DockerEndpoint {
 
-    private static IOHolder io = new IOHolder();
+    private static final IOHolder IO = new IOHolder();
 
     @GET
     @Path("/getinput/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getInputData(@PathParam("id") int id) {
-        String input = io.getInput(id);
+        String input = IO.getInput(id);
         return Response.ok(input).build();
     }
 
@@ -31,7 +31,7 @@ public class DockerEndpoint {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public Response postOutputData(@PathParam("id") int id, String data) {
-        io.insertOutput(id, data);
+        IO.insertOutput(id, data);
         return Response.ok("OK").build();
     }
 
@@ -40,7 +40,7 @@ public class DockerEndpoint {
     @Path("/response/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getResponse(@PathParam("id") int id) {
-        String output = io.getOutput(id);
+        String output = IO.getOutput(id);
         return Response.ok(output).build();
     }
 
