@@ -6,6 +6,7 @@ import com.spotify.docker.client.LogStream;
 import com.spotify.docker.client.exceptions.DockerException;
 import com.spotify.docker.client.messages.ContainerConfig;
 import com.spotify.docker.client.messages.ContainerCreation;
+import com.spotify.docker.client.messages.HostConfig;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -29,9 +30,9 @@ public class RepoExecutor {
     private final ArrayList<String> command;
 
     public RepoExecutor(RepoConfiguration conf, Integer id) {
-        client = DefaultDockerClient.builder()
-                .uri(URI.create("http://" + HOST + ":" + PORT))
-                .build();
+        client = DefaultDockerClient.builder().
+                uri(URI.create("http://" + HOST + ":" + PORT)).
+                build();
 
         timer = new Timer();
 
@@ -41,14 +42,20 @@ public class RepoExecutor {
         command.add(conf.getComm());
         command.add(conf.getFile());
         command.add(id.toString());
-        
+
         this.orderNo = conf.getOrder();
     }
 
-    public void exec() throws ScriptExecutorException, DockerException, InterruptedException {// při nepodařeném clone atd - scriptexecutorexception
+    public void exec() throws ScriptExecutorException, DockerException, InterruptedException {
+        HostConfig hostConfig = HostConfig.builder().
+                cpuQuota(50000L).//CPU 50%
+                memory((long) (512 * 1024 * 1024)).
+                build();
+
         ContainerConfig config = ContainerConfig.builder().
                 image(IMAGE).
                 cmd(command).
+                hostConfig(hostConfig).
                 build();
 
         ContainerCreation creation = client.createContainer(config);
@@ -67,26 +74,31 @@ public class RepoExecutor {
             client.killContainer(creation.id());
             throw new ScriptExecutorException("Script " + orderNo + " did not finish within timeout: " + RUNTIME_TIMEOUT + "ms");
         }
-        
+
         if (statusCode > 0) {
             String errMsg = "Script " + orderNo + ": ";
             switch (statusCode) {
-                case 1: errMsg += "Could not clone repository";
+                case 1:
+                    errMsg += "Could not clone repository";
                     break;
-                case 2: errMsg += "Could not checkout commmit";
+                case 2:
+                    errMsg += "Could not checkout commmit";
                     break;
-                case 3: errMsg += "Could not find file";
+                case 3:
+                    errMsg += "Could not find file";
                     break;
-                case 5: errMsg += "Script error: " + statusCode;
+                case 5:
+                    errMsg += "Script error";
                     break;
                 case 4:
-                case 6: 
-                default: errMsg += "Internal error";
+                case 6:
+                default:
+                    errMsg += "Internal error";
                     break;
             }
             throw new ScriptExecutorException(errMsg);
         }
-        
+
 //        // debug
 //        LogStream stdout = client.logs(creation.id(), DockerClient.LogsParam.stdout());
 //        String output = stdout.readFully();
@@ -99,7 +111,6 @@ public class RepoExecutor {
 //        System.out.println("Output stderr: ---");
 //        System.out.print(errput);
 //        System.out.println("\n------------------");
-
         client.removeContainer(creation.id());
     }
 
@@ -107,5 +118,5 @@ public class RepoExecutor {
         client.close();
         timer.cancel();
     }
-    
+
 }

@@ -23,7 +23,11 @@ public class DockerEndpoint {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getInputData(@PathParam("id") int id) {
         String input = IO.getInput(id);
-        return Response.ok(input).build();
+        if (input != null) {
+            return Response.ok(input).build();
+        } else {
+            return Response.status(404).build();
+        }
     }
 
     @POST
@@ -31,8 +35,11 @@ public class DockerEndpoint {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public Response postOutputData(@PathParam("id") int id, String data) {
-        IO.insertOutput(id, data);
-        return Response.ok("OK").build();
+        if (IO.insertOutput(id, data)) {
+            return Response.ok("OK").build();
+        } else {
+            return Response.status(404).build();
+        }
     }
 
 }

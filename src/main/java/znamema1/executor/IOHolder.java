@@ -27,10 +27,16 @@ public class IOHolder {
         }
     }
 
-    public void insertOutput(Integer id, String data) {
+    public boolean insertOutput(Integer id, String data) {
+        synchronized (INPUT) {
+            if (!INPUT.containsKey(id)) {
+                return false;
+            }
+        }
         synchronized (OUTPUT) {
             OUTPUT.put(id, data);
         }
+        return true;
     }
 
     public String getOutput(Integer id) {
@@ -38,8 +44,8 @@ public class IOHolder {
             return OUTPUT.get(id);
         }
     }
-    
-    public String getResult(Integer id){
+
+    public String getResult(Integer id) {
         return getInput(id);
     }
 

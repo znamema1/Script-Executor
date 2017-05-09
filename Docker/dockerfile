@@ -1,13 +1,22 @@
 FROM library/ubuntu
 
-# Set the working directory to /app
-WORKDIR /app
+# Create user, /app/ directory and grant ownership
+RUN useradd executor && mkdir /app/
 
-# Copy the current directory contents into the container at /app
-ADD . /app
+# Set the working directory to /app
+WORKDIR /app/
+
+# Copy the current directory contents into the container at /app/
+ADD ./masterscript.sh /app/
+
+# Grant ownership and permissions
+RUN chown -R executor:executor /app/ && chmod u+x ./masterscript.sh
 
 # Install any needed packages
-RUN apt-get update && apt-get install git curl net-tools --assume-yes
+RUN apt-get update && apt-get install git curl --assume-yes
+
+# Set the user to run
+USER executor
 
 # Run masterscript when the container launches
-CMD ["./masterscript"]
+CMD ["./masterscript.sh"]
