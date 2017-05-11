@@ -3,6 +3,8 @@ package znamema1.executor;
 import java.util.TimerTask;
 
 /**
+ * Simple Timer task to be run after a specific timeout. Its only purpose is to
+ * interrupt the thread waiting for the container.
  *
  * @author martin
  */

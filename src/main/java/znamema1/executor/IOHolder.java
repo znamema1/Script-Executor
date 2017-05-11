@@ -6,6 +6,8 @@ import java.util.Random;
 import znamema1.ConfigLoader;
 
 /**
+ * Collection for storing input and output data from individual scripts to be
+ * used for next script in chain.
  *
  * @author martin
  */
@@ -16,10 +18,16 @@ public class IOHolder {
 
     static {
         if (ConfigLoader.debug()) {
-            INPUT.put(1, "PI**O, toto je malý text A TOTO JE VELKÝ\nPříliš ŽLUŤOUČKÝ kůň ÚPĚL ďábelské ÓDY.");
+            INPUT.put(1, "toto je malý text A TOTO JE VELKÝ\nPříliš ŽLUŤOUČKÝ kůň ÚPĚL ďábelské ÓDY.");
         }
     }
 
+    /**
+     * Insert first input data into the input Map.
+     * Should be called before executing the script chain.
+     * @param data input data to be processed by the script chain
+     * @return randomly generated unique id for the script chain
+     */
     public Integer insertInput(String data) {
         synchronized (INPUT) {
             Integer id = getRandomId();
@@ -34,6 +42,13 @@ public class IOHolder {
         }
     }
 
+    /**
+     * Insert output data from an indiviual script into the output Map.
+     * Fails if the script chain ID does not exist in the input Map.
+     * @param id unique id of the script chain
+     * @param data result of script execution
+     * @return true if the output has been inserted, false otherwise
+     */
     public boolean insertOutput(Integer id, String data) {
         synchronized (INPUT) {
             if (!INPUT.containsKey(id)) {
@@ -52,10 +67,20 @@ public class IOHolder {
         }
     }
 
+    /**
+     * Returns final output data.
+     * Should be called after the script chain finished.
+     * @param id unique id of the script chain
+     * @return output data from the last script from the chain
+     */
     public String getResult(Integer id) {
         return getInput(id);
     }
 
+    /**
+     * Removes all data related to a unique script chain ID.
+     * @param id unique id of the script chain
+     */
     public void clear(Integer id) {
         synchronized (INPUT) {
             synchronized (OUTPUT) {
@@ -65,6 +90,11 @@ public class IOHolder {
         }
     }
 
+    /**
+     * Switches the output of one script from the output Map into the input Map,
+     * waiting there for being picked up by next script in chain.
+     * @param id unique id of the script chain
+     */
     public void switchIO(Integer id) {
         synchronized (INPUT) {
             synchronized (OUTPUT) {

@@ -1,7 +1,7 @@
 package znamema1.entities;
 
 /**
- *
+ * Abstract class standing for a general result.
  * @author martin
  */
 public abstract class Result {

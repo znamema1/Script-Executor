@@ -10,12 +10,19 @@ import znamema1.entities.Result;
 import znamema1.entities.ScriptConfiguration;
 
 /**
- *
+ * REST API endpoint for external communication for executing a script chain.
  * @author martin
  */
 @Path("/runner")
 public class ExecutorEndpoint {
 
+    /**
+     * Receives a request for executing a script chain.
+     * 
+     * @param conf Script chain configuration
+     * @return Response containing body generated from either OKResult or ErrResult.
+     * On error still OK HTTP status is returned.
+     */
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)

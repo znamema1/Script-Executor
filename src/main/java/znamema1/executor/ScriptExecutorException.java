@@ -1,7 +1,7 @@
 package znamema1.executor;
 
 /**
- *
+ * Exception class for known errors.
  * @author Martin
  */
 public class ScriptExecutorException extends Exception {

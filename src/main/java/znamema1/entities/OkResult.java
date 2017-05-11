@@ -1,7 +1,7 @@
 package znamema1.entities;
 
 /**
- *
+ * Class for a successful execution result.
  * @author martin
  */
 public class OkResult extends Result {

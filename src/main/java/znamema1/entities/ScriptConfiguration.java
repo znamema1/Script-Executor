@@ -1,7 +1,9 @@
 package znamema1.entities;
 
 /**
- *
+ * Bean for a configuration of multiple repository script to run.
+ * Also contains input for the script chain.
+ * For every run request an instance will be created.
  * @author martin
  */
 public class ScriptConfiguration {

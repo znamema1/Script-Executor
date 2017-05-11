@@ -12,6 +12,8 @@ import znamema1.entities.Result;
 import znamema1.entities.ScriptConfiguration;
 
 /**
+ * Class responsible for executing a whole script chain and piping the
+ * input/output. Every script in the chain is passed to the RepoExecutor.
  *
  * @author martin
  */
@@ -20,6 +22,12 @@ public class ScriptExecutorService {
     private static final Semaphore SEMAPHORE = new Semaphore((int) ConfigLoader.getLong("DOCKER_MAX_THREADS"), true);
     private static final IOHolder IO = new IOHolder();
 
+    /**
+     * Start the execution of the script chain.
+     *
+     * @param conf Script chain configuration
+     * @return Result, either OK or Err depending on the chain result.
+     */
     public Result executeScript(ScriptConfiguration conf) {
         try {
             SEMAPHORE.acquire();
@@ -38,6 +46,13 @@ public class ScriptExecutorService {
         }
     }
 
+    /**
+     * Executes all the scripts in the chain one at a time.
+     *
+     * @param conf Script chain configuration
+     * @return output data from the last script from the chain
+     * @throws ScriptExecutorException when an error occurred
+     */
     private String executeRepos(ScriptConfiguration conf) throws ScriptExecutorException {
         validateConfiguration(conf);
         Integer id = IO.insertInput(conf.getInput());
@@ -54,6 +69,12 @@ public class ScriptExecutorService {
 
     }
 
+    /**
+     *
+     * @param conf Configuration fo the repository to be run
+     * @param id unique id of the script chain
+     * @throws ScriptExecutorException when an error occurs
+     */
     private void executeRepo(RepoConfiguration conf, Integer id) throws ScriptExecutorException {
         RepoExecutor executor = new RepoExecutor(conf, id);
         try {
@@ -65,6 +86,11 @@ public class ScriptExecutorService {
         }
     }
 
+    /**
+     * Validates Script chain configuration recevied by the Executor endpoint.
+     * @param conf Script chain configuration to be validated
+     * @throws ScriptExecutorException when the configuration is invalid
+     */
     private void validateConfiguration(ScriptConfiguration conf) throws ScriptExecutorException {
         if (conf.getRepos() == null || conf.getRepos().length <= 0) {
             throw new ScriptExecutorException("No repos to run");

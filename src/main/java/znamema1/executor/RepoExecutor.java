@@ -15,6 +15,8 @@ import znamema1.ConfigLoader;
 import znamema1.entities.RepoConfiguration;
 
 /**
+ * Class responsible for executing one script from a Script chain in virtualized
+ * docker environment.
  *
  * @author martin
  */
@@ -41,6 +43,12 @@ public class RepoExecutor {
     private final Integer orderNo;
     private final ArrayList<String> command;
 
+    /**
+     * Creates a new docker client and prepares the execution command.
+     *
+     * @param conf Configuration fo the repository to be run
+     * @param id unique id of the script chain
+     */
     public RepoExecutor(RepoConfiguration conf, Integer id) {
         client = DefaultDockerClient.builder()
                 .uri(URI.create("http://" + HOST + ":" + PORT))
@@ -61,13 +69,25 @@ public class RepoExecutor {
         this.orderNo = conf.getOrder();
     }
 
+    /**
+     * Creates the container and launches the script in it. Removes the
+     * container afterwards. If the container does not finish within the
+     * specified timeout, the container will be killed.
+     *
+     * @throws ScriptExecutorException when the script execution failed in the
+     * Docker environment
+     * @throws DockerException when some configuration is invalid or some error
+     * appeared in the communication with the Docker daemon
+     * @throws InterruptedException when some error appeared in the
+     * communication with the Docker daemon
+     */
     public void exec() throws ScriptExecutorException, DockerException, InterruptedException {
-        Map<String,String> storageOpts = new HashMap<String,String>() {
+        Map<String, String> storageOpts = new HashMap<String, String>() {
             {
                 put("size", STORAGE);
             }
         };
-        
+
         HostConfig hostConfig = HostConfig.builder()
                 .cpuPeriod(CPU_PERIOD)
                 .cpuQuota(CPU_QUOTA)
@@ -128,21 +148,12 @@ public class RepoExecutor {
             }
             throw new ScriptExecutorException(errMsg);
         }
-
-//        // debug
-//        LogStream stdout = client.logs(creation.id(), DockerClient.LogsParam.stdout());
-//        String output = stdout.readFully();
-//        System.out.println("Output stdout: ---");
-//        System.out.print(output);
-//        System.out.println("\n------------------");
-//
-//        LogStream stderr = client.logs(creation.id(), DockerClient.LogsParam.stderr());
-//        String errput = stderr.readFully();
-//        System.out.println("Output stderr: ---");
-//        System.out.print(errput);
-//        System.out.println("\n------------------");
     }
 
+    /**
+     * Cleans up allocated resources, such as the docker client and timer.
+     * Must be called after a script execution finished.
+     */
     public void cleanup() {
         client.close();
         timer.cancel();

@@ -3,7 +3,7 @@ package znamema1.entities;
 import znamema1.executor.ScriptExecutorException;
 
 /**
- *
+ * Class for an error execution result.
  * @author martin
  */
 public class ErrResult extends Result {
