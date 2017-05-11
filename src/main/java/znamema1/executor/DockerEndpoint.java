@@ -1,5 +1,6 @@
 package znamema1.executor;
 
+import java.util.Date;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -8,6 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import znamema1.ConfigLoader;
 
 /**
  *
@@ -23,11 +25,24 @@ public class DockerEndpoint {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getInputData(@PathParam("id") int id) {
         String input = IO.getInput(id);
+        Response response;
+        String statusMsg;
+
         if (input != null) {
-            return Response.ok(input).build();
+            statusMsg = "Sending input data";
+            response = Response.ok(input).build();
         } else {
-            return Response.status(404).build();
+            statusMsg = "No input stored";
+            response = Response.status(404).build();
         }
+
+        if (ConfigLoader.debug()) {
+            System.out.println("----------------------------------------------------");
+            System.out.println(new Date());
+            System.out.println("ID: " + id);
+            System.out.println("Status: " + statusMsg);
+        }
+        return response;
     }
 
     @POST
@@ -35,11 +50,24 @@ public class DockerEndpoint {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public Response postOutputData(@PathParam("id") int id, String data) {
+        Response response;
+        String statusMsg;
+
         if (IO.insertOutput(id, data)) {
-            return Response.ok("OK").build();
+            statusMsg = "Output stored";
+            response = Response.ok().build();
         } else {
-            return Response.status(404).build();
+            statusMsg = "Output rejected";
+            response = Response.status(404).build();
         }
+
+        if (ConfigLoader.debug()) {
+            System.out.println("----------------------------------------------------");
+            System.out.println(new Date());
+            System.out.println("ID: " + id);
+            System.out.println("Status: " + statusMsg);
+        }
+        return response;
     }
 
 }

@@ -1,0 +1,16 @@
+*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [4:240]
+:POSTROUTING ACCEPT [1:60]
+COMMIT
+
+*filter
+:INPUT DROP [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT DROP [3:180]
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+COMMIT

@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/Executor"/>
+<Context antiJARLocking="true" path="/Executor">
+    <!-- Allow connections from localhost (PHP) and docker0 interface only -->
+    <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+           allow="172\.17\.\d+\.\d+|127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
+</Context>

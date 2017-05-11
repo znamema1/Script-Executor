@@ -3,6 +3,7 @@ package znamema1.executor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import znamema1.ConfigLoader;
 
 /**
  *
@@ -12,6 +13,12 @@ public class IOHolder {
 
     private static final Map<Integer, String> INPUT = new HashMap<Integer, String>();
     private static final Map<Integer, String> OUTPUT = new HashMap<Integer, String>();
+
+    static {
+        if (ConfigLoader.debug()) {
+            INPUT.put(1, "PI**O, toto je malý text A TOTO JE VELKÝ\nPříliš ŽLUŤOUČKÝ kůň ÚPĚL ďábelské ÓDY.");
+        }
+    }
 
     public Integer insertInput(String data) {
         synchronized (INPUT) {

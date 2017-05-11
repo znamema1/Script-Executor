@@ -1,7 +1,10 @@
 package znamema1.executor;
 
 import com.spotify.docker.client.exceptions.DockerException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.Semaphore;
+import znamema1.ConfigLoader;
 import znamema1.entities.ErrResult;
 import znamema1.entities.OkResult;
 import znamema1.entities.RepoConfiguration;
@@ -14,7 +17,7 @@ import znamema1.entities.ScriptConfiguration;
  */
 public class ScriptExecutorService {
 
-    private static final Semaphore SEMAPHORE = new Semaphore(2, true);//config - threads
+    private static final Semaphore SEMAPHORE = new Semaphore((int) ConfigLoader.getLong("DOCKER_MAX_THREADS"), true);
     private static final IOHolder IO = new IOHolder();
 
     public Result executeScript(ScriptConfiguration conf) {
@@ -29,7 +32,7 @@ public class ScriptExecutorService {
             return new ErrResult(ex);
         } catch (Exception ex) {
 
-            return new ErrResult("Internal Error!");
+            return new ErrResult("Internal error: " + ex.getMessage());
         } finally {
             SEMAPHORE.release();
         }
@@ -56,7 +59,7 @@ public class ScriptExecutorService {
         try {
             executor.exec();
         } catch (InterruptedException | DockerException ex) {
-            throw new ScriptExecutorException("Script number " + conf.getOrder() + " failed execution.");
+            throw new ScriptExecutorException("Script number " + conf.getOrder() + " failed execution: " + ex.getMessage());
         } finally {
             executor.cleanup();
         }
@@ -64,17 +67,29 @@ public class ScriptExecutorService {
 
     private void validateConfiguration(ScriptConfiguration conf) throws ScriptExecutorException {
         if (conf.getRepos() == null || conf.getRepos().length <= 0) {
-            throw new ScriptExecutorException("No repos to run!");
+            throw new ScriptExecutorException("No repos to run");
         }
-        for (int i = 0; i < conf.getRepos().length; i++) {
-            String git = conf.getRepos()[i].getGit();
-            String file = conf.getRepos()[i].getFile();
-            String comm = conf.getRepos()[i].getComm();
-            Integer order = conf.getRepos()[i].getOrder();
+
+        RepoConfiguration[] repos = conf.getRepos();
+
+        Arrays.sort(repos, new Comparator<RepoConfiguration>() {
+            @Override
+            public int compare(RepoConfiguration o1, RepoConfiguration o2) {
+                return o1.getOrder() - o2.getOrder();
+            }
+        });
+
+        for (int i = 0; i < repos.length; i++) {
+            String git = repos[i].getGit();
+            String file = repos[i].getFile();
+            String comm = repos[i].getComm();
+            Integer order = repos[i].getOrder();
             if (git == null || file == null || comm == null || order == null) {
-                throw new ScriptExecutorException("Script " + i + " contains nonvalid data!");
+                throw new ScriptExecutorException("Script " + i + " contains invalid data");
             }
         }
+
+        conf.setRepos(repos);
     }
 
 }
