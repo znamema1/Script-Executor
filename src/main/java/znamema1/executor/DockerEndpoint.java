@@ -14,7 +14,7 @@ import znamema1.ConfigLoader;
 /**
  * REST API endpoint for internal communication with the Docker daemon.
  *
- * @author martin
+ * @author Martin Znamenacek
  */
 @Path("/docker")
 public class DockerEndpoint {

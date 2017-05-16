@@ -11,7 +11,7 @@ import znamema1.entities.ScriptConfiguration;
 
 /**
  * REST API endpoint for external communication for executing a script chain.
- * @author martin
+ * @author Martin Znamenacek
  */
 @Path("/runner")
 public class ExecutorEndpoint {

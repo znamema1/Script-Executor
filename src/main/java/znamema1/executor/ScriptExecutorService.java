@@ -15,7 +15,7 @@ import znamema1.entities.ScriptConfiguration;
  * Class responsible for executing a whole script chain and piping the
  * input/output. Every script in the chain is passed to the RepoExecutor.
  *
- * @author martin
+ * @author Martin Znamenacek
  */
 public class ScriptExecutorService {
 

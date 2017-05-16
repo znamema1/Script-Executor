@@ -9,7 +9,7 @@ import znamema1.ConfigLoader;
  * Collection for storing input and output data from individual scripts to be
  * used for next script in chain.
  *
- * @author martin
+ * @author Martin Znamenacek
  */
 public class IOHolder {
 

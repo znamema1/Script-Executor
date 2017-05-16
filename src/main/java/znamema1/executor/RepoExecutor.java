@@ -18,7 +18,7 @@ import znamema1.entities.RepoConfiguration;
  * Class responsible for executing one script from a Script chain in virtualized
  * docker environment.
  *
- * @author martin
+ * @author Martin Znamenacek
  */
 public class RepoExecutor {
 

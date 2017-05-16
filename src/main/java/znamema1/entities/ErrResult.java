@@ -4,7 +4,7 @@ import znamema1.executor.ScriptExecutorException;
 
 /**
  * Class for an error execution result.
- * @author martin
+ * @author Martin Znamenacek
  */
 public class ErrResult extends Result {
 

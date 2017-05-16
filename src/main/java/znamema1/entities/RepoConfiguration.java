@@ -2,7 +2,7 @@ package znamema1.entities;
 
 /**
  * Bean for a configuration of one repository script to run.
- * @author martin
+ * @author Martin Znamenacek
  */
 public class RepoConfiguration {
 

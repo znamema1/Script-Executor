@@ -8,7 +8,7 @@ import java.util.Properties;
  * Helper class for loading configuration properties. The config file is to be
  * placed into <em>/Script-Executor-Service/config.properties</em>.
  *
- * @author Martin
+ * @author Martin Znamenacek
  */
 public class ConfigLoader {
 

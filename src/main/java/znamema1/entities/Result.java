@@ -2,7 +2,7 @@ package znamema1.entities;
 
 /**
  * Abstract class standing for a general result.
- * @author martin
+ * @author Martin Znamenacek
  */
 public abstract class Result {
 

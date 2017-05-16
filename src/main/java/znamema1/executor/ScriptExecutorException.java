@@ -2,7 +2,7 @@ package znamema1.executor;
 
 /**
  * Exception class for known errors.
- * @author Martin
+ * @author Martin Znamenacek
  */
 public class ScriptExecutorException extends Exception {
 
