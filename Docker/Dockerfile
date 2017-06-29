@@ -10,7 +10,7 @@ ADD ./ /app/
 RUN useradd executor && chmod -R 711 /app/
 
 # Install any needed packages
-RUN apt-get update && apt-get install git curl net-tools iptables g++ --assume-yes
+RUN apt-get update && apt-get install git curl net-tools iptables g++ gcc --assume-yes
 
 # Set the user to run
 # The masterscript must still be run by root!

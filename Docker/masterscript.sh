@@ -36,7 +36,7 @@ ERR_FILE="$IO_DIR/err"
 
 # I/O URLs
 HOST="172.17.0.1"
-PORT="8080"
+PORT="8181"
 BASE_URL="http://$HOST:$PORT/Executor-1.0/docker"
 URL_INPUT="$BASE_URL/getinput/$4"
 URL_OUTPUT="$BASE_URL/postoutput/$4"
